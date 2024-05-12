@@ -1,6 +1,6 @@
-#include "../s21_matrix_oop.h"
+#include "../matrix.h"
 
-void S21Matrix::SumMatrix(const S21Matrix& other) {
+void Matrix::SumMatrix(const Matrix& other) {
   if (IsEqualSizeMatrix(other)) {
     for (int i = 0; i != other.rows_; ++i) {
       for (int j = 0; j != other.cols_; ++j) {

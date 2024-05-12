@@ -1,8 +1,8 @@
-#include "../s21_matrix_oop.h"
+#include "../matrix.h"
 
-double S21Matrix::Determinant() {
+double Matrix::Determinant() {
   double result = 0.0;
-  S21Matrix minor;
+  Matrix minor;
   if (IsCorrect() && IsSquareMatrix()) {
     if (rows_ == 1) {
       result = matrix_[0][0];

@@ -1,4 +1,4 @@
-#include "../s21_matrix_oop.h"
+#include "../matrix.h"
 
 // int main() {
 // }

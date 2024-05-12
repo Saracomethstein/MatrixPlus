@@ -1,7 +1,7 @@
-#include "../s21_matrix_oop.h"
+#include "../matrix.h"
 
-S21Matrix S21Matrix::MinorMatrix(int rows, int cols) {
-  S21Matrix result(rows_ - 1, cols_ - 1);
+Matrix Matrix::MinorMatrix(int rows, int cols) {
+  Matrix result(rows_ - 1, cols_ - 1);
   int rows_i = 0;
   int columns_j = 0;
 

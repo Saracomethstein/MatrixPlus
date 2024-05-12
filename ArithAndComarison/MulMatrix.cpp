@@ -1,8 +1,8 @@
-#include "../s21_matrix_oop.h"
+#include "../matrix.h"
 
-void S21Matrix::MulMatrix(const S21Matrix &other) {
+void Matrix::MulMatrix(const Matrix &other) {
   if (cols_ == other.rows_) {
-    S21Matrix res(rows_, other.cols_);
+    Matrix res(rows_, other.cols_);
     for (int i = 0; i != rows_; ++i) {
       for (int j = 0; j != other.cols_; ++j) {
         for (int k = 0; k != other.rows_; ++k) {

@@ -1,6 +1,6 @@
-#include "../s21_matrix_oop.h"
+#include "../matrix.h"
 
-void S21Matrix::FreeMemory() {
+void Matrix::FreeMemory() {
   rows_ = 0;
   cols_ = 0;
   for (int i = 0; i < rows_; i++) {
@@ -9,7 +9,7 @@ void S21Matrix::FreeMemory() {
   delete[] matrix_;
 }
 
-void S21Matrix::AllocationMemory() {
+void Matrix::AllocationMemory() {
   matrix_ = new double *[rows_];
 
   for (int i = 0; i < rows_; i++) {

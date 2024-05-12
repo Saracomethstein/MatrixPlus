@@ -1,11 +1,11 @@
-#include "../s21_matrix_oop.h"
+#include "../matrix.h"
 
-S21Matrix S21Matrix::CalcComplements() {
-  S21Matrix result;
-  S21Matrix minor;
+Matrix Matrix::CalcComplements() {
+  Matrix result;
+  Matrix minor;
 
   if (IsCorrect() && IsSquareMatrix()) {
-    result = S21Matrix(rows_, cols_);
+    result = Matrix(rows_, cols_);
     if (cols_ == 1) {
       result.matrix_[0][0] = matrix_[0][0];
     } else {

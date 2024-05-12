@@ -1,9 +1,9 @@
-#include "../s21_matrix_oop.h"
+#include "../matrix.h"
 
-S21Matrix S21Matrix::InverseMatrix() {
+Matrix Matrix::InverseMatrix() {
   double determinant = 0.0;
-  S21Matrix complements;
-  S21Matrix transpose;
+  Matrix complements;
+  Matrix transpose;
 
   determinant = Determinant();
   if (IsCorrect() && determinant != 0) {
