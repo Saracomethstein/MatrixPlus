@@ -1,16 +1,16 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "../s21_matrix_oop.h"
+#include "../matrix.h"
 
 TEST(MatrixTest, EqMatrixElementsAreEqual) {
-  S21Matrix matrix1;
-  S21Matrix matrix2;
+  Matrix matrix1;
+  Matrix matrix2;
   EXPECT_TRUE(matrix1.EqMatrix(matrix2));
 }
 
 TEST(MatrixTest, EqMatrixElementsAreDifferent) {
-  S21Matrix matrix1(3, 2);
+  Matrix matrix1(3, 2);
   matrix1(0, 0) = 1.0;
   matrix1(0, 1) = 2.0;
   matrix1(1, 0) = 3.0;
@@ -18,7 +18,7 @@ TEST(MatrixTest, EqMatrixElementsAreDifferent) {
   matrix1(2, 0) = 2.0;
   matrix1(2, 1) = 3.0;
 
-  S21Matrix matrix2(2, 3);
+  Matrix matrix2(2, 3);
   matrix2(0, 0) = 1.0;
   matrix2(0, 1) = 3.0;
   matrix2(0, 2) = 3.0;
@@ -30,13 +30,13 @@ TEST(MatrixTest, EqMatrixElementsAreDifferent) {
 }
 
 TEST(MatrixTest, EqMatrixSizesAreDifferent) {
-  S21Matrix matrix1(2, 2);
+  Matrix matrix1(2, 2);
   matrix1(0, 0) = 1.0;
   matrix1(0, 1) = 2.0;
   matrix1(1, 0) = 3.0;
   matrix1(1, 1) = 1.0;
 
-  S21Matrix matrix2(2, 3);
+  Matrix matrix2(2, 3);
   matrix2(0, 0) = 1.0;
   matrix2(0, 1) = 3.0;
   matrix2(0, 2) = 3.0;
@@ -48,13 +48,13 @@ TEST(MatrixTest, EqMatrixSizesAreDifferent) {
 }
 
 TEST(MatrixTest, EqMatrixEpsilon) {
-  S21Matrix matrix1(2, 2);
+  Matrix matrix1(2, 2);
   matrix1(0, 0) = 1.0;
   matrix1(0, 1) = 2.000001;
   matrix1(1, 0) = 3.0;
   matrix1(1, 1) = 1.0;
 
-  S21Matrix matrix2(2, 2);
+  Matrix matrix2(2, 2);
   matrix2(0, 0) = 1.0;
   matrix2(0, 1) = 2.000000;
   matrix2(1, 0) = 1.0;
@@ -64,14 +64,14 @@ TEST(MatrixTest, EqMatrixEpsilon) {
 }
 
 TEST(MatrixTest, EqMatrixOperatorElementsAreEqual) {
-  S21Matrix matrix1;
-  S21Matrix matrix2;
+  Matrix matrix1;
+  Matrix matrix2;
   EXPECT_TRUE(matrix1 == matrix2);
 }
 
 TEST(MatrixTest, SumMatrixBasic) {
-  S21Matrix matrix1(3, 3);
-  S21Matrix matrix2(3, 3);
+  Matrix matrix1(3, 3);
+  Matrix matrix2(3, 3);
 
   for (int i = 0; i < matrix1.GetRows(); ++i) {
     for (int j = 0; j < matrix1.GetCols(); ++j) {
@@ -82,7 +82,7 @@ TEST(MatrixTest, SumMatrixBasic) {
 
   matrix1.SumMatrix(matrix2);
 
-  const S21Matrix const_matrix1 = std::move(matrix1);
+  const Matrix const_matrix1 = std::move(matrix1);
 
   for (int i = 0; i < const_matrix1.GetRows(); ++i) {
     for (int j = 0; j < const_matrix1.GetCols(); ++j) {
@@ -93,32 +93,32 @@ TEST(MatrixTest, SumMatrixBasic) {
 }
 
 TEST(MatrixTest, SumMatrixMatricesOfDifferentSizes) {
-  S21Matrix matrix1;
+  Matrix matrix1;
   matrix1.ResizeCols(1);
-  S21Matrix matrix2;
+  Matrix matrix2;
   EXPECT_THROW(matrix1.SumMatrix(matrix2), std::invalid_argument);
 }
 
 TEST(MatrixTest, SumOperatorMatrix) {
-  S21Matrix matrix1(3, 3);
-  S21Matrix matrix2(3, 3);
-  S21Matrix actual(3, 3);
-  S21Matrix expected(3, 3);
+  Matrix matrix1(3, 3);
+  Matrix matrix2(3, 3);
+  Matrix actual(3, 3);
+  Matrix expected(3, 3);
   actual = matrix1 + matrix2;
   EXPECT_TRUE(actual.EqMatrix(expected));
 }
 
 TEST(MatrixTest, SumOperatorMatrixMatricesOfDifferentSizes) {
-  S21Matrix matrix1;
+  Matrix matrix1;
   matrix1.ResizeCols(1);
-  S21Matrix matrix2;
+  Matrix matrix2;
   EXPECT_THROW(matrix1 + matrix2, std::invalid_argument);
 }
 
 TEST(MatrixTest, AdditionAssignmentOperatorMatrix) {
-  S21Matrix matrix1(3, 3);
-  S21Matrix matrix2(3, 3);
-  S21Matrix expected_matrix(3, 3);
+  Matrix matrix1(3, 3);
+  Matrix matrix2(3, 3);
+  Matrix expected_matrix(3, 3);
 
   for (int i = 0; i < expected_matrix.GetRows(); ++i) {
     for (int j = 0; j < expected_matrix.GetCols(); ++j) {
@@ -127,23 +127,23 @@ TEST(MatrixTest, AdditionAssignmentOperatorMatrix) {
     }
   }
 
-  S21Matrix actual_result = matrix1 += matrix2;
+  Matrix actual_result = matrix1 += matrix2;
 
   EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
 }
 
 TEST(MatrixTest, AdditionAssignmentOperatorMatricesOfDifferentSizes) {
-  S21Matrix matrix1;
+  Matrix matrix1;
   matrix1.ResizeCols(1);
-  S21Matrix matrix2;
+  Matrix matrix2;
 
   EXPECT_THROW(matrix1 += matrix2, std::invalid_argument);
 }
 
 TEST(MatrixTest, SubMatrixBasic) {
-  S21Matrix matrix1(3, 3);
-  S21Matrix matrix2(3, 3);
-  S21Matrix expected_matrix(3, 3);
+  Matrix matrix1(3, 3);
+  Matrix matrix2(3, 3);
+  Matrix expected_matrix(3, 3);
   for (int i = 0; i < expected_matrix.GetRows(); ++i) {
     for (int j = 0; j < expected_matrix.GetCols(); ++j) {
       expected_matrix(i, j) = 0.0;
@@ -154,58 +154,58 @@ TEST(MatrixTest, SubMatrixBasic) {
 }
 
 TEST(MatrixTest, SubMatrixMatricesOfDifferentSizes) {
-  S21Matrix matrix1;
+  Matrix matrix1;
   matrix1.ResizeCols(1);
-  S21Matrix matrix2;
-  S21Matrix expected_matrix;
+  Matrix matrix2;
+  Matrix expected_matrix;
   EXPECT_THROW(matrix1.SubMatrix(matrix2), std::invalid_argument);
 }
 
 TEST(MatrixTest, SubOperatorMatrix) {
-  S21Matrix matrix1(3, 3);
-  S21Matrix matrix2(3, 3);
-  S21Matrix expected_matrix(3, 3);
+  Matrix matrix1(3, 3);
+  Matrix matrix2(3, 3);
+  Matrix expected_matrix(3, 3);
   for (int i = 0; i < expected_matrix.GetRows(); ++i) {
     for (int j = 0; j < expected_matrix.GetCols(); ++j) {
       expected_matrix(i, j) = 0.0;
     }
   }
-  S21Matrix actual_result = matrix1 - matrix2;
+  Matrix actual_result = matrix1 - matrix2;
   EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
 }
 
 TEST(MatrixTest, SubOperatorMatricesOfDifferentSizes) {
-  S21Matrix matrix1;
+  Matrix matrix1;
   matrix1.ResizeCols(1);
-  S21Matrix matrix2;
+  Matrix matrix2;
 
   EXPECT_THROW(matrix1 - matrix2, std::invalid_argument);
 }
 
 TEST(MatrixTest, DifferenceAssignmentOperatorMatrix) {
-  S21Matrix matrix1(3, 3);
-  S21Matrix matrix2(3, 3);
-  S21Matrix expected_matrix(3, 3);
+  Matrix matrix1(3, 3);
+  Matrix matrix2(3, 3);
+  Matrix expected_matrix(3, 3);
   for (int i = 0; i < expected_matrix.GetRows(); ++i) {
     for (int j = 0; j < expected_matrix.GetCols(); ++j) {
       expected_matrix(i, j) = 0.0;
     }
   }
-  S21Matrix actual_result = matrix1 -= matrix2;
+  Matrix actual_result = matrix1 -= matrix2;
   EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
 }
 
 TEST(MatrixTest, DifferenceAssignmentOperatorMatricesOfDifferentSizes) {
-  S21Matrix matrix1;
+  Matrix matrix1;
   matrix1.ResizeCols(1);
-  S21Matrix matrix2;
+  Matrix matrix2;
 
   EXPECT_THROW(matrix1 -= matrix2, std::invalid_argument);
 }
 
 TEST(MatrixTest, MultByNumberBasic) {
-  S21Matrix matrix1(3, 3);
-  S21Matrix expected_matrix(3, 3);
+  Matrix matrix1(3, 3);
+  Matrix expected_matrix(3, 3);
   for (int i = 0; i < expected_matrix.GetRows(); ++i) {
     for (int j = 0; j < expected_matrix.GetCols(); ++j) {
       expected_matrix(i, j) = matrix1(i, j) * 3.0;
@@ -216,31 +216,31 @@ TEST(MatrixTest, MultByNumberBasic) {
 }
 
 TEST(MatrixTest, MultByNumberOperator) {
-  S21Matrix matrix1(3, 3);
-  S21Matrix expected_matrix(3, 3);
+  Matrix matrix1(3, 3);
+  Matrix expected_matrix(3, 3);
   for (int i = 0; i < expected_matrix.GetRows(); ++i) {
     for (int j = 0; j < expected_matrix.GetCols(); ++j) {
       expected_matrix(i, j) = matrix1(i, j) * 3.0;
     }
   }
-  S21Matrix actual_result = matrix1 * 3.0;
+  Matrix actual_result = matrix1 * 3.0;
   EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
 }
 
 TEST(MatrixTest, MultiplicationAssignmentOperatorMultNumber) {
-  S21Matrix matrix1(3, 3);
-  S21Matrix expected_matrix(3, 3);
+  Matrix matrix1(3, 3);
+  Matrix expected_matrix(3, 3);
   for (int i = 0; i < expected_matrix.GetRows(); ++i) {
     for (int j = 0; j < expected_matrix.GetCols(); ++j) {
       expected_matrix(i, j) = matrix1(i, j) * 3.0;
     }
   }
-  S21Matrix actual_result = matrix1 *= 3.0;
+  Matrix actual_result = matrix1 *= 3.0;
   EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
 }
 
 TEST(MatrixTest, MultMatrixBasic) {
-  S21Matrix matrix1(3, 2);
+  Matrix matrix1(3, 2);
   matrix1(0, 0) = 1.0;
   matrix1(0, 1) = 2.0;
   matrix1(1, 0) = 3.0;
@@ -248,7 +248,7 @@ TEST(MatrixTest, MultMatrixBasic) {
   matrix1(2, 0) = 2.0;
   matrix1(2, 1) = 3.0;
 
-  S21Matrix matrix2(2, 3);
+  Matrix matrix2(2, 3);
   matrix2(0, 0) = 1.0;
   matrix2(0, 1) = 2.0;
   matrix2(0, 2) = 3.0;
@@ -256,7 +256,7 @@ TEST(MatrixTest, MultMatrixBasic) {
   matrix2(1, 1) = 2.0;
   matrix2(1, 2) = 3.0;
 
-  S21Matrix expected_matrix(3, 3);
+  Matrix expected_matrix(3, 3);
 
   expected_matrix(0, 0) = 3.0;
   expected_matrix(0, 1) = 6.0;
@@ -268,19 +268,19 @@ TEST(MatrixTest, MultMatrixBasic) {
   expected_matrix(2, 1) = 10.0;
   expected_matrix(2, 2) = 15.0;
 
-  S21Matrix actual_result = matrix1;
+  Matrix actual_result = matrix1;
   actual_result.MulMatrix(matrix2);
 
   EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
 }
 
 TEST(MatrixTest, MultMatrixMultIndalidMatrixSizeException) {
-  S21Matrix matrix1(3, 1);
+  Matrix matrix1(3, 1);
   matrix1(0, 0) = 1.0;
   matrix1(1, 0) = 3.0;
   matrix1(2, 0) = 2.0;
 
-  S21Matrix matrix2(2, 3);
+  Matrix matrix2(2, 3);
   matrix2(0, 0) = 1.0;
   matrix2(0, 1) = 2.0;
   matrix2(0, 2) = 3.0;
@@ -292,7 +292,7 @@ TEST(MatrixTest, MultMatrixMultIndalidMatrixSizeException) {
 }
 
 TEST(MatrixTest, MultMatrixOperator) {
-  S21Matrix matrix1(3, 2);
+  Matrix matrix1(3, 2);
   matrix1(0, 0) = 1.0;
   matrix1(0, 1) = 2.0;
   matrix1(1, 0) = 3.0;
@@ -300,7 +300,7 @@ TEST(MatrixTest, MultMatrixOperator) {
   matrix1(2, 0) = 2.0;
   matrix1(2, 1) = 3.0;
 
-  S21Matrix matrix2(2, 3);
+  Matrix matrix2(2, 3);
   matrix2(0, 0) = 1.0;
   matrix2(0, 1) = 2.0;
   matrix2(0, 2) = 3.0;
@@ -308,7 +308,7 @@ TEST(MatrixTest, MultMatrixOperator) {
   matrix2(1, 1) = 2.0;
   matrix2(1, 2) = 3.0;
 
-  S21Matrix expected_matrix(3, 3);
+  Matrix expected_matrix(3, 3);
   expected_matrix(0, 0) = 3.0;
   expected_matrix(0, 1) = 6.0;
   expected_matrix(0, 2) = 9.0;
@@ -319,13 +319,13 @@ TEST(MatrixTest, MultMatrixOperator) {
   expected_matrix(2, 1) = 10.0;
   expected_matrix(2, 2) = 15.0;
 
-  S21Matrix actual_result = matrix1 * matrix2;
+  Matrix actual_result = matrix1 * matrix2;
 
   EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
 }
 
 TEST(MatrixTest, MultiplicationAssignmentOperatorMultMatrix) {
-  S21Matrix matrix1(3, 2);
+  Matrix matrix1(3, 2);
   matrix1(0, 0) = 1.0;
   matrix1(0, 1) = 2.0;
   matrix1(1, 0) = 3.0;
@@ -333,7 +333,7 @@ TEST(MatrixTest, MultiplicationAssignmentOperatorMultMatrix) {
   matrix1(2, 0) = 2.0;
   matrix1(2, 1) = 3.0;
 
-  S21Matrix matrix2(2, 3);
+  Matrix matrix2(2, 3);
   matrix2(0, 0) = 1.0;
   matrix2(0, 1) = 2.0;
   matrix2(0, 2) = 3.0;
@@ -341,7 +341,7 @@ TEST(MatrixTest, MultiplicationAssignmentOperatorMultMatrix) {
   matrix2(1, 1) = 2.0;
   matrix2(1, 2) = 3.0;
 
-  S21Matrix expected_matrix(3, 3);
+  Matrix expected_matrix(3, 3);
   expected_matrix(0, 0) = 3.0;
   expected_matrix(0, 1) = 6.0;
   expected_matrix(0, 2) = 9.0;
@@ -352,13 +352,13 @@ TEST(MatrixTest, MultiplicationAssignmentOperatorMultMatrix) {
   expected_matrix(2, 1) = 10.0;
   expected_matrix(2, 2) = 15.0;
 
-  S21Matrix actual_result = matrix1 *= matrix2;
+  Matrix actual_result = matrix1 *= matrix2;
 
   EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
 }
 
 TEST(MatrixTest, EqMatrixOperator) {
-  S21Matrix matrix1(3, 2);
+  Matrix matrix1(3, 2);
   matrix1(0, 0) = 1.0;
   matrix1(0, 1) = 2.0;
   matrix1(1, 0) = 3.0;
@@ -366,7 +366,7 @@ TEST(MatrixTest, EqMatrixOperator) {
   matrix1(2, 0) = 2.0;
   matrix1(2, 1) = 3.0;
 
-  S21Matrix matrix2(3, 2);
+  Matrix matrix2(3, 2);
   matrix2(0, 0) = 1.0;
   matrix2(0, 1) = 2.0;
   matrix2(1, 0) = 3.0;
@@ -378,7 +378,7 @@ TEST(MatrixTest, EqMatrixOperator) {
 }
 
 TEST(MatrixTest, TransposeMatrixBasic) {
-  S21Matrix matrix1(3, 2);
+  Matrix matrix1(3, 2);
   matrix1(0, 0) = 1.0;
   matrix1(0, 1) = 2.0;
   matrix1(1, 0) = 3.0;
@@ -386,7 +386,7 @@ TEST(MatrixTest, TransposeMatrixBasic) {
   matrix1(2, 0) = 2.0;
   matrix1(2, 1) = 3.0;
 
-  S21Matrix expected_matrix(2, 3);
+  Matrix expected_matrix(2, 3);
   expected_matrix(0, 0) = 1.0;
   expected_matrix(0, 1) = 3.0;
   expected_matrix(0, 2) = 2.0;
@@ -394,25 +394,25 @@ TEST(MatrixTest, TransposeMatrixBasic) {
   expected_matrix(1, 1) = 1.0;
   expected_matrix(1, 2) = 3.0;
 
-  S21Matrix transposed_matrix = matrix1.Transpose();
+  Matrix transposed_matrix = matrix1.Transpose();
 
   EXPECT_TRUE(transposed_matrix.EqMatrix(expected_matrix));
 }
 
 TEST(MatrixTest, CalcComplementsMatrixBasic00) {
-  S21Matrix input_matrix(1, 1);
+  Matrix input_matrix(1, 1);
   input_matrix(0, 0) = 21.0;
 
-  S21Matrix expected_result(1, 1);
+  Matrix expected_result(1, 1);
   expected_result(0, 0) = 21.0;
 
-  S21Matrix actual_result = input_matrix.CalcComplements();
+  Matrix actual_result = input_matrix.CalcComplements();
 
   EXPECT_TRUE(actual_result.EqMatrix(expected_result));
 }
 
 TEST(MatrixTest, CalcComplementsMatrixBasic02) {
-  S21Matrix input_matrix(3, 3);
+  Matrix input_matrix(3, 3);
   input_matrix(0, 0) = 1.0;
   input_matrix(0, 1) = 2.0;
   input_matrix(0, 2) = 3.0;
@@ -423,7 +423,7 @@ TEST(MatrixTest, CalcComplementsMatrixBasic02) {
   input_matrix(2, 1) = 2.0;
   input_matrix(2, 2) = 1.0;
 
-  S21Matrix expected_matrix(3, 3);
+  Matrix expected_matrix(3, 3);
   expected_matrix(0, 0) = -1.0;
   expected_matrix(0, 1) = 9.0;
   expected_matrix(0, 2) = -13.0;
@@ -434,19 +434,19 @@ TEST(MatrixTest, CalcComplementsMatrixBasic02) {
   expected_matrix(2, 1) = 1.0;
   expected_matrix(2, 2) = 1.0;
 
-  S21Matrix actual_result = input_matrix.CalcComplements();
+  Matrix actual_result = input_matrix.CalcComplements();
 
   EXPECT_TRUE(actual_result.EqMatrix(expected_matrix));
 }
 
 TEST(MatrixTest, CalcComplementsMatrixNotSquaredMatrixException) {
-  S21Matrix input_matrix(3, 1);
+  Matrix input_matrix(3, 1);
 
   EXPECT_THROW(input_matrix.CalcComplements(), std::invalid_argument);
 }
 
 TEST(MatrixTest, DeterminantMatrixBasic00) {
-  S21Matrix input_matrix(3, 3);
+  Matrix input_matrix(3, 3);
   input_matrix(0, 0) = 21.0;
   input_matrix(0, 1) = 42.0;
   input_matrix(0, 2) = 13.0;
@@ -465,7 +465,7 @@ TEST(MatrixTest, DeterminantMatrixBasic00) {
 }
 
 TEST(MatrixTest, DeterminantMatrixBasic01) {
-  S21Matrix input_matrix(3, 3);
+  Matrix input_matrix(3, 3);
   input_matrix(0, 0) = 2.0;
   input_matrix(0, 1) = 5.0;
   input_matrix(0, 2) = 7.0;
@@ -484,7 +484,7 @@ TEST(MatrixTest, DeterminantMatrixBasic01) {
 }
 
 TEST(MatrixTest, DeterminantMatrixBasic02) {
-  S21Matrix input_matrix(1, 1);
+  Matrix input_matrix(1, 1);
   input_matrix(0, 0) = 21.0;
 
   double expected_result = 21.0;
@@ -495,13 +495,13 @@ TEST(MatrixTest, DeterminantMatrixBasic02) {
 }
 
 TEST(MatrixTest, DeterminantNotSquaredMatrixException) {
-  S21Matrix input_matrix(3, 1);
+  Matrix input_matrix(3, 1);
 
   EXPECT_THROW(input_matrix.Determinant(), std::invalid_argument);
 }
 
 TEST(MatrixTest, InverseMatrixBasic) {
-  S21Matrix input(3, 3);
+  Matrix input(3, 3);
   input(0, 0) = 2.0;
   input(0, 1) = 5.0;
   input(0, 2) = 7.0;
@@ -512,7 +512,7 @@ TEST(MatrixTest, InverseMatrixBasic) {
   input(2, 1) = -2.0;
   input(2, 2) = -3.0;
 
-  S21Matrix expected(3, 3);
+  Matrix expected(3, 3);
   expected(0, 0) = 1.0;
   expected(0, 1) = -1.0;
   expected(0, 2) = 1.0;
@@ -523,13 +523,13 @@ TEST(MatrixTest, InverseMatrixBasic) {
   expected(2, 1) = -29.0;
   expected(2, 2) = 24.0;
 
-  S21Matrix actual = input.InverseMatrix();
+  Matrix actual = input.InverseMatrix();
 
   EXPECT_TRUE(actual.EqMatrix(expected));
 }
 
 TEST(MatrixTest, InverseMatrixZeroException) {
-  S21Matrix input(3, 3);
+  Matrix input(3, 3);
   input(0, 0) = 1.0;
   input(0, 1) = 2.0;
   input(0, 2) = 3.0;
@@ -544,9 +544,9 @@ TEST(MatrixTest, InverseMatrixZeroException) {
 }
 
 TEST(MatrixTest, ParametrizedConstructorTest) {
-  S21Matrix actual(3, 3);
+  Matrix actual(3, 3);
 
-  S21Matrix expected(3, 3);
+  Matrix expected(3, 3);
   for (int row = 0; row < 3; ++row) {
     for (int col = 0; col < 3; ++col) {
       expected(row, col) = 0.0;
@@ -557,22 +557,22 @@ TEST(MatrixTest, ParametrizedConstructorTest) {
 }
 
 TEST(MatrixTest, ParametrizedConstructorTestInvalidIndex00) {
-  EXPECT_THROW(S21Matrix expected(2, -42), std::invalid_argument);
+  EXPECT_THROW(Matrix expected(2, -42), std::invalid_argument);
 }
 
 TEST(MatrixTest, ParametrizedConstructorTestInvalidIndex01) {
-  EXPECT_THROW(S21Matrix expected(-42, -42), std::invalid_argument);
+  EXPECT_THROW(Matrix expected(-42, -42), std::invalid_argument);
 }
 
 TEST(MatrixTest, ParametrizedConstructorTestInvalidIndex03) {
-  EXPECT_THROW(S21Matrix expected(-42, 42), std::invalid_argument);
+  EXPECT_THROW(Matrix expected(-42, 42), std::invalid_argument);
 }
 
 TEST(MatrixTest, RectangleMatrixTestRows) {
-  S21Matrix actual(3, 3);
+  Matrix actual(3, 3);
   actual.ResizeRows(5);
 
-  S21Matrix expected(5, 3);
+  Matrix expected(5, 3);
   for (int row = 0; row < 5; ++row) {
     for (int col = 0; col < 3; ++col) {
       expected(row, col) = 0.0;
@@ -583,10 +583,10 @@ TEST(MatrixTest, RectangleMatrixTestRows) {
 }
 
 TEST(MatrixTest, RectangleMatrixTestCols) {
-  S21Matrix actual(3, 3);
+  Matrix actual(3, 3);
   actual.ResizeCols(5);
 
-  S21Matrix expected(3, 5);
+  Matrix expected(3, 5);
   for (int row = 0; row < 3; ++row) {
     for (int col = 0; col < 5; ++col) {
       expected(row, col) = 0.0;
@@ -597,27 +597,27 @@ TEST(MatrixTest, RectangleMatrixTestCols) {
 }
 
 TEST(MatrixTest, SetRowsToBelowZeroTest) {
-  S21Matrix actual(3, 3);
+  Matrix actual(3, 3);
   EXPECT_THROW(actual.ResizeRows(-5), std::invalid_argument);
 }
 
 TEST(MatrixTest, SetColsToBelowZeroTest) {
-  S21Matrix actual(3, 3);
+  Matrix actual(3, 3);
   EXPECT_THROW(actual.ResizeCols(-5), std::invalid_argument);
 }
 
 TEST(MatrixTest, GetInvalidElementTest) {
-  S21Matrix actual(3, 3);
+  Matrix actual(3, 3);
   EXPECT_THROW(actual(-5, 0), std::out_of_range);
 }
 
 TEST(MatrixTest, SetInvalidElementTest) {
-  S21Matrix actual(3, 3);
+  Matrix actual(3, 3);
   EXPECT_THROW(actual(-5, 0) = 42.0, std::out_of_range);
 }
 
 TEST(MatrixTest, CopyConstructorTest) {
-  S21Matrix input(3, 3);
+  Matrix input(3, 3);
   input(0, 0) = 1.0;
   input(0, 1) = 2.0;
   input(0, 2) = 3.0;
@@ -628,20 +628,20 @@ TEST(MatrixTest, CopyConstructorTest) {
   input(2, 1) = 8.0;
   input(2, 2) = 9.0;
 
-  S21Matrix expected(3, 3);
+  Matrix expected(3, 3);
   for (int row = 0; row < 3; ++row) {
     for (int col = 0; col < 3; ++col) {
       expected(row, col) = input(row, col);
     }
   }
 
-  S21Matrix actual(input);
+  Matrix actual(input);
 
   EXPECT_TRUE(actual.EqMatrix(expected));
 }
 
 TEST(MatrixTest, CopyAssignmentOperatorTest) {
-  S21Matrix input(3, 3);
+  Matrix input(3, 3);
   input(0, 0) = 1.0;
   input(0, 1) = 2.0;
   input(0, 2) = 3.0;
@@ -652,20 +652,20 @@ TEST(MatrixTest, CopyAssignmentOperatorTest) {
   input(2, 1) = 8.0;
   input(2, 2) = 9.0;
 
-  S21Matrix expected(3, 3);
+  Matrix expected(3, 3);
   for (int row = 0; row < 3; ++row) {
     for (int col = 0; col < 3; ++col) {
       expected(row, col) = input(row, col);
     }
   }
 
-  S21Matrix actual = input;
+  Matrix actual = input;
 
   EXPECT_TRUE(actual.EqMatrix(expected));
 }
 
 TEST(MatrixTest, MovementConstructorTest) {
-  S21Matrix input(3, 3);
+  Matrix input(3, 3);
   input(0, 0) = 1.0;
   input(0, 1) = 2.0;
   input(0, 2) = 3.0;
@@ -676,20 +676,20 @@ TEST(MatrixTest, MovementConstructorTest) {
   input(2, 1) = 8.0;
   input(2, 2) = 9.0;
 
-  S21Matrix expected(3, 3);
+  Matrix expected(3, 3);
   for (int row = 0; row < 3; ++row) {
     for (int col = 0; col < 3; ++col) {
       expected(row, col) = input(row, col);
     }
   }
 
-  S21Matrix actual(std::move(input));
+  Matrix actual(std::move(input));
 
   EXPECT_TRUE(actual.EqMatrix(expected));
 }
 
 TEST(MatrixTest, DestructorTest) {
-  S21Matrix input(3, 3);
+  Matrix input(3, 3);
   input(0, 0) = 1.0;
   input(0, 1) = 2.0;
   input(0, 2) = 3.0;
@@ -700,7 +700,7 @@ TEST(MatrixTest, DestructorTest) {
   input(2, 1) = 8.0;
   input(2, 2) = 9.0;
 
-  input.~S21Matrix();
+  input.~Matrix();
 
   int rows = input.GetRows();
   int cols = input.GetCols();
@@ -712,7 +712,7 @@ TEST(MatrixTest, DestructorTest) {
 }
 
 TEST(MatrixTest, IndexationByMatrixElements) {
-  S21Matrix input(3, 3);
+  Matrix input(3, 3);
   input(0, 0) = 1.0;
   input(0, 1) = 2.0;
   input(0, 2) = 3.0;
