@@ -1,5 +1,5 @@
-#ifndef S21_MATRIX_OOP_H
-#define S21_MATRIX_OOP_H
+#ifndef MATRIX_H
+#define MATRIX_H
 
 #include <cmath>
 #include <iostream>
